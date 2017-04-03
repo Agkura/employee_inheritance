@@ -10,10 +10,13 @@ class Board
 
   def fill_grid
     @grid.each_index do |index|
-      next unless [0,1,6,7].include?(index)
       @grid[index].each_index do |idx|
         pos = [index, idx]
-        self[pos] = Piece.new
+        if [0,1,6,7].include?(index)
+          self[pos] = Piece.new("a")
+        else
+          self[pos] = Piece.new("b")
+        end
       end
     end
   end
@@ -33,5 +36,9 @@ class Board
     raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
 
     self[end_pos], self[start] = self[start], nil
+  end
+
+  def in_bounds?(pos)
+    pos.all? {|int| int.between?(0,7)}
   end
 end
