@@ -10,6 +10,6 @@ class NullPiece < Piece
   end
 
   def to_s
-    "\u25AA"
+    "\u25A1"
   end
 end

@@ -12,29 +12,19 @@ class Board
     @grid.each_index do |index|
       @grid[index].each_index do |idx|
         pos = [index, idx]
-        if index == 0 || index == 1
-          self[pos] = Pawn.new(:W, grid, pos)
-        elsif index == 6 || index == 7
-          self[pos] = Pawn.new(:W, grid, pos)
+        if index == 0
+          self[pos] = last_row_pieces[idx].new(:W, self, pos)
+        elsif index == 1
+          self[pos] = Pawn.new(:W, self, pos)
+        elsif index == 6
+          self[pos] = Pawn.new(:B, self, pos)
+        elsif index == 7
+          self[pos] = last_row_pieces[idx].new(:B, self, pos)
         else
           self[pos] = NullPiece.instance
         end
       end
     end
-    # @grid.each_index do |index|
-    #   @grid[index].each_index do |idx|
-    #     pos = [index, idx]
-    #     if index == 0
-    #       self[pos] = Piece.new(:W, @grid, pos)
-    #     elsif index == 1
-    #       self[pos] = Pawn.new(:W, @grid, pos)
-    #     elsif index == 6
-    #       self[pos] = Pawn.new(:B, @grid, pos)
-    #     elsif index == 7
-    #       self[pos] = Piece.new(:B, @grid, pos)
-    #     end
-    #   end
-    # end
   end
 
   def [](pos)
@@ -55,15 +45,16 @@ class Board
     self[end_pos].pos = end_pos
   end
 
-  private
-
   def in_bounds?(pos)
     pos.all? {|int| int.between?(0,7)}
   end
 
-  def fill_back_row
-    #white_pieces = [Rook,Knight,"Knight","Bishop"]
-    #white_royals [ ]
+  private
+
+
+
+  def last_row_pieces
+    [Rook,Knight,Bishop,King,Queen,Bishop,Knight,Rook]
   end
 
 

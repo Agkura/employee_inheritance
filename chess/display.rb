@@ -33,6 +33,6 @@ if __FILE__ == $0
   a = Board.new
   b = Display.new(a)
   b.render
-  a.move_piece([1,1],[4,3])
+  a.move_piece([0,0],[3,5])
   b.render
 end

@@ -1,7 +1,7 @@
 require_relative 'piece'
 require_relative 'slideable'
 
-class Queen < Piece
+class Rook < Piece
   include Slideable
 
   def initialize(symbol, board, pos)
@@ -9,8 +9,10 @@ class Queen < Piece
   end
 
   def to_s
-    @symbol == :W ? "\u2655" : "\u265B"
+    @symbol == :W ? "\u2656" : "\u265C"
   end
 
-
+  def move_dirs
+    horizontal_dirs
+  end
 end

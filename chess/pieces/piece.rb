@@ -1,4 +1,5 @@
 class Piece
+  attr_accessor :symbol, :pos
   def initialize(symbol, board, pos)
     @symbol = symbol
     @board = board
@@ -6,7 +7,7 @@ class Piece
   end
 
   def empty?
-    @board[@pos].is_a?(NullPiece)
+    is_a?(NullPiece)
   end
 
   def valid_moves(moves)
