@@ -1,7 +1,5 @@
 require 'byebug'
-require_relative 'piece'
-require_relative 'pawn'
-require_relative 'null'
+require_relative 'pieces'
 
 class Board
   attr_reader :grid
@@ -57,9 +55,16 @@ class Board
     self[end_pos].pos = end_pos
   end
 
+  private
+
   def in_bounds?(pos)
     pos.all? {|int| int.between?(0,7)}
   end
 
-  private
+  def fill_back_row
+    #white_pieces = [Rook,Knight,"Knight","Bishop"]
+    #white_royals [ ]
+  end
+
+
 end

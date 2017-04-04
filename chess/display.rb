@@ -14,6 +14,7 @@ class Display
     @board.grid.each_index do |index|
       @board.grid[index].each_index do |idx|
         pos = [index, idx]
+        @board[pos] = NullPiece.instance if @board[pos].nil?
         if pos == cursor.cursor_pos
           print @board[pos].to_s.colorize(:blue)
         else

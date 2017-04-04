@@ -20,7 +20,7 @@ class Pawn < Piece
   protected
 
   def at_start_row?
-    @start_row
+    (@symbol == :W && pos[0] == 1) || (@symbol == :B && pos[0] == 6)
   end
 
   def forward_dir

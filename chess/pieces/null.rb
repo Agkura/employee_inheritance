@@ -9,9 +9,6 @@ class NullPiece < Piece
     @symbol = :N
   end
 
-  def moves
-  end
-
   def to_s
     "\u25AA"
   end
