@@ -17,7 +17,7 @@ class Display
         if pos == cursor.cursor_pos
           print @board[pos].to_s.colorize(:blue)
         else
-          print @board[pos]
+          print @board[pos].to_s
         end
       end
       print "\n"
@@ -32,7 +32,11 @@ if __FILE__ == $0
   b = Display.new(a)
   b.render
   20.times do |int|
+    puts "_____________"
+    puts ""
+    puts ""
     b.cursor.get_input
     b.render
+
   end
 end

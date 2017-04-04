@@ -1,5 +1,6 @@
 require 'byebug'
 require_relative 'piece'
+require_relative 'pawn'
 
 class Board
   attr_reader :grid
@@ -12,10 +13,14 @@ class Board
     @grid.each_index do |index|
       @grid[index].each_index do |idx|
         pos = [index, idx]
-        if [0,1,6,7].include?(index)
-          self[pos] = Piece.new("a")
-        else
-          self[pos] = Piece.new("b")
+        if index == 0
+          self[pos] = Piece.new(:W, @grid, pos)
+        elsif index == 1
+          self[pos] = Pawn.new(:W, @grid, pos)
+        elsif index == 6
+          self[pos] = Pawn.new(:B, @grid, pos)
+        elsif index == 7
+          self[pos] = Piece.new(:B, @grid, pos)
         end
       end
     end
@@ -26,9 +31,9 @@ class Board
     @grid[row][col]
   end
 
-  def []=(pos, value)
+  def []=(pos, piece)
     row, col = pos
-    @grid[row][col] = value
+    @grid[row][col] = piece
   end
 
   def move_piece(start, end_pos)
