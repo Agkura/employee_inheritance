@@ -35,4 +35,5 @@ if __FILE__ == $0
   b.render
   a.move_piece([0,0],[3,5])
   b.render
+  p a.in_check?(:B)
 end

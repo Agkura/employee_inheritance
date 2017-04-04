@@ -9,7 +9,7 @@ class Pawn < Piece
     @start_row = true
   end
 
-  def moves(pos)
+  def moves
     forward_steps.concat(side_attacks)
   end
 

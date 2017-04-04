@@ -37,6 +37,39 @@ class Board
     @grid[row][col] = piece
   end
 
+  # check if an opponent's valid moves includes your king
+  def in_check?(symbol)
+    king_pos = find_king(symbol)
+    opponents = opponent_pieces(symbol)
+    opponents.each do |el|
+      return true if el.valid_moves(el.moves).include?(king_pos)
+    end
+    false
+  end
+
+  def checkmate?(symbol)
+    (in_check?(symbol) &&
+    player_pieces.all? { |piece| piece.valid_moves.empty? })
+  end
+
+  def find_king(symbol)
+    k = @grid.flatten.select do |el|
+      el.class == King && el.symbol == symbol
+    end
+    k.first.pos
+  end
+
+  def opponent_pieces(symbol)
+    @grid.flatten.select do |el|
+      el.symbol != symbol unless el.empty?
+    end
+  end
+
+  def player_pieces(symbol)
+    @grid.flatten.select { |el| el.symbol == symbol }
+  end
+
+
   def move_piece(start, end_pos)
     raise "no piece" if self[start].nil?
     raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
@@ -50,8 +83,6 @@ class Board
   end
 
   private
-
-
 
   def last_row_pieces
     [Rook,Knight,Bishop,King,Queen,Bishop,Knight,Rook]
