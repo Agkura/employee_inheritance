@@ -1,6 +1,7 @@
 require 'byebug'
 require_relative 'piece'
 require_relative 'pawn'
+require_relative 'null'
 
 class Board
   attr_reader :grid
@@ -13,17 +14,29 @@ class Board
     @grid.each_index do |index|
       @grid[index].each_index do |idx|
         pos = [index, idx]
-        if index == 0
-          self[pos] = Piece.new(:W, @grid, pos)
-        elsif index == 1
-          self[pos] = Pawn.new(:W, @grid, pos)
-        elsif index == 6
-          self[pos] = Pawn.new(:B, @grid, pos)
-        elsif index == 7
-          self[pos] = Piece.new(:B, @grid, pos)
+        if index == 0 || index == 1
+          self[pos] = Pawn.new(:W, grid, pos)
+        elsif index == 6 || index == 7
+          self[pos] = Pawn.new(:W, grid, pos)
+        else
+          self[pos] = NullPiece.instance
         end
       end
     end
+    # @grid.each_index do |index|
+    #   @grid[index].each_index do |idx|
+    #     pos = [index, idx]
+    #     if index == 0
+    #       self[pos] = Piece.new(:W, @grid, pos)
+    #     elsif index == 1
+    #       self[pos] = Pawn.new(:W, @grid, pos)
+    #     elsif index == 6
+    #       self[pos] = Pawn.new(:B, @grid, pos)
+    #     elsif index == 7
+    #       self[pos] = Piece.new(:B, @grid, pos)
+    #     end
+    #   end
+    # end
   end
 
   def [](pos)
@@ -40,10 +53,13 @@ class Board
     raise "no piece" if self[start].nil?
     raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
 
-    self[end_pos], self[start] = self[start], nil
+    self[end_pos], self[start] = self[start], self[end_pos]
+    self[end_pos].pos = end_pos
   end
 
   def in_bounds?(pos)
     pos.all? {|int| int.between?(0,7)}
   end
+
+  private
 end

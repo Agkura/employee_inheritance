@@ -25,18 +25,13 @@ class Display
 
   end
 
+
 end
 
 if __FILE__ == $0
   a = Board.new
   b = Display.new(a)
   b.render
-  20.times do |int|
-    puts "_____________"
-    puts ""
-    puts ""
-    b.cursor.get_input
-    b.render
-
-  end
+  a.move_piece([1,1],[4,3])
+  b.render
 end

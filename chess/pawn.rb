@@ -2,6 +2,7 @@ require_relative "piece"
 require 'byebug'
 
 class Pawn < Piece
+  attr_accessor :pos
 
   def initialize(symbol, board, pos)
     super

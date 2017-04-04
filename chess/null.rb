@@ -2,12 +2,17 @@ require_relative "piece"
 require "singleton"
 
 class NullPiece < Piece
-  include 'Singleton'
+  include Singleton
+  attr_reader :symbol
+
+  def initialize
+    @symbol = :N
+  end
 
   def moves
   end
 
   def to_s
-    "N"
+    "\u25AA"
   end
 end
