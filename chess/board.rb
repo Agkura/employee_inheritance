@@ -5,8 +5,9 @@ class Board
   attr_reader :grid
   def initialize
     @grid = Array.new(8) { Array.new(8) }
-    fill_grid
+    # fill_grid
   end
+
 
   def fill_grid
     @grid.each_index do |index|
@@ -20,6 +21,8 @@ class Board
           self[pos] = Pawn.new(:B, self, pos)
         elsif index == 7
           self[pos] = last_row_pieces[idx].new(:B, self, pos)
+        elsif index == 4 && idx == 4
+          self[pos] = King.new(:W, self, pos)
         else
           self[pos] = NullPiece.instance
         end
@@ -42,14 +45,14 @@ class Board
     king_pos = find_king(symbol)
     opponents = opponent_pieces(symbol)
     opponents.each do |el|
-      return true if el.valid_moves(el.moves).include?(king_pos)
+      return true if el.valid_moves(el.moves, false).include?(king_pos)
     end
     false
   end
 
   def checkmate?(symbol)
-    (in_check?(symbol) &&
-    player_pieces.all? { |piece| piece.valid_moves.empty? })
+    king = find_king(symbol)
+    (in_check?(symbol) && king.valid_moves(king.moves).empty?)
   end
 
   def find_king(symbol)
@@ -74,7 +77,8 @@ class Board
     raise "no piece" if self[start].nil?
     raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
 
-    self[end_pos], self[start] = self[start], self[end_pos]
+    self[end_pos], self[start] = self[start], NullPiece.instance
+    # self[end_pos] = self[start]
     self[end_pos].pos = end_pos
   end
 
@@ -82,10 +86,40 @@ class Board
     pos.all? {|int| int.between?(0,7)}
   end
 
+  def deep_dup
+    new_board = Board.new
+    @grid.each_index do |index|
+      @grid[index].each_index do |idx|
+        pos = [index, idx]
+        piece = self[pos]
+        symbol, clss = piece.symbol, piece.class
+        new_board[pos] = clss.new(symbol, new_board, pos) unless clss == NullPiece
+        if clss == NullPiece
+          new_board[pos] = NullPiece.instance
+        end
+      end
+    end
+    new_board
+  end
+
+  def pieces
+    @grid.flatten
+  end
+
+  def to_s
+    @grid.each_index do |index|
+      @grid[index].each_index do |idx|
+        pos = [index, idx]
+        print self[pos].to_s
+      end
+      print "\n"
+    end
+  end
+
   private
 
   def last_row_pieces
-    [Rook,Knight,Bishop,King,Queen,Bishop,Knight,Rook]
+    [Rook,Knight,Bishop,Queen,Queen,Bishop,Knight,Rook]
   end
 
 
