@@ -76,7 +76,18 @@ class Board
   def move_piece(start, end_pos)
     raise "no piece" if self[start].nil?
     raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
+    unless self[start].valid_moves(self[start].moves).include?(end_pos)
+      raise "not a valid move"
+    end
 
+    self[end_pos], self[start] = self[start], NullPiece.instance
+    # self[end_pos] = self[start]
+    self[end_pos].pos = end_pos
+  end
+
+  def move_piece!(start, end_pos)
+    raise "no piece" if self[start].nil?
+    raise "out of bounds" if end_pos.none? {|int| int.between?(0,7) }
     self[end_pos], self[start] = self[start], NullPiece.instance
     # self[end_pos] = self[start]
     self[end_pos].pos = end_pos
@@ -102,24 +113,10 @@ class Board
     new_board
   end
 
-  def pieces
-    @grid.flatten
-  end
-
-  def to_s
-    @grid.each_index do |index|
-      @grid[index].each_index do |idx|
-        pos = [index, idx]
-        print self[pos].to_s
-      end
-      print "\n"
-    end
-  end
-
   private
 
   def last_row_pieces
-    [Rook,Knight,Bishop,Queen,Queen,Bishop,Knight,Rook]
+    [Rook,Knight,Bishop,King,Queen,Bishop,Knight,Rook]
   end
 
 

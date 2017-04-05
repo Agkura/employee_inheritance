@@ -31,7 +31,7 @@ class Piece
   def move_into_check?(end_pos)
     #debugger
     new_board = @board.deep_dup
-    new_board.move_piece(@pos,end_pos)
+    new_board.move_piece!(@pos,end_pos)
     new_board.in_check?(@symbol)
   end
 
